@@ -146,6 +146,7 @@
 #define OPT_WIDTH 80
 
 
+using namespace std;
 
 
 
@@ -433,12 +434,18 @@ void Getopt::parse(int argc, char *argv[], const char *f) {
    fmt += 'h';
  }
 
+cout << "Parse 00" << endl;
+
  argc_ = argc;
  argv_ = argv;
+cout << "Parse 01" << endl;
  auto const name = strrchr(argv_[0], '/');
+cout << "Parse 02" << endl;
  prgname_ = name? name + 1: argv_[0];
 
+cout << "Parse 03" << endl;
  parseInputArgs_(argc, argv, fmt);                              // process all inputs in argc/argv
+cout << "Parse 04" << endl;
  processStandalone_(argc, argv);                                // now process all args
 }
 
@@ -453,19 +460,27 @@ void Getopt::parseInputArgs_(int argc, char *argv[], const std::string &fmt) {
   if(option == ':')
    throw EXP(opt_argument_missing);                             // missing argument, forced ':'
 
+cout << "Parse IA 01" << endl;
   if(option == '?')                                             // '?' means invalid option
    if(throwException_) {                                         // if throwing is allowed
+cout << "Parse IA 02" << endl;
     exception_ = optopt;                                        //   optopt = either unknown option,
     throw fmt.find(exception_) == std::string::npos?            //   (if not found in fmt string)
            EXP(invalid_option): EXP(opt_argument_missing);      //   or missing arg, throw anyway
    }                                                            // otherwise let user handle it
 
+cout << "Parse IA 03" << endl;
   if(optarg)                                                    // if option has argument
    om_.at(option) = optarg;                                     // set option with argument
   else {                                                        // is boolean option then
    if(option == 'h' and autohelp_)
     { usage().help(); exit(0); }                                // process auto-help
+cout << "Parse IA 04" << endl;
+cout << ( option == 0 ) << endl;
+cout << ( (int)option ) << endl;
+cout << "'" << option << "'" << endl;
    om_.at(option).hit();                                        // increment hit for boolean
+cout << "Parse IA 05" << endl;
   }
  } // while(...
 

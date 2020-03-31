@@ -92,16 +92,26 @@ int main(int argc, char *argv[]) {
   delisting occurs\n");
 
  // parse options
- try { opt.parse(argc,argv); }
- catch(Getopt::stdException & e)
-  { opt.usage(); return e.code() + OFF_GETOPT; }
+try
+{
+	DOUT() << "start" << endl;
+	opt.parse(argc,argv);
+	DOUT() << "01" << endl;
+}
+catch (Getopt::stdException & e)
+{
+	opt.usage();
+	return e.code() + OFF_GETOPT;
+}
 
+DOUT() << "02" << endl;
  conv.attr_label(opt[CHR(OPT_ALB)].c_str())
      .enumerate(opt[CHR(OPT_ENM)])
      .digitize(opt[CHR(OPT_DGT)])
      .retry(not opt[CHR(OPT_RTR)])
      .tab(opt[CHR(OPT_IND)])
      .quote_solidus(opt[CHR(OPT_SLD)]);
+DOUT() << "03" << endl;
 
  DBG().level(opt[CHR(OPT_DBG)])
       .use_ostream(cerr)
@@ -109,6 +119,7 @@ int main(int argc, char *argv[]) {
 
 
  try {
+  DBG(0) DOUT() << "start" << endl;
   src_str = read_source(r);
   try_reversing(r);                                             // see if source is JSON first
 
